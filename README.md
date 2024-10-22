@@ -11,54 +11,29 @@ Sockets Links.
 ## PROGRAM
 ### CLIENT
 ```
-import socket
-def start_server(host='127.0.0.1', port=65432):
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((host, port))
-    server_socket.listen(1)
-    print(f"Server listening on {host}:{port}")
-
-    while True:
-        conn, addr = server_socket.accept()
-        print(f"Connected by {addr}")
-
-        try:
-            while True:
-                data = conn.recv(1024)
-                if not data:
-                    break  
-
-                print(f"Received: {data.decode()}")
-
-                
-                conn.sendall(data)
-        finally:
-            conn.close()
-if __name__ == "__main__":
-    start_server()
+import socket 
+s=socket.socket() 
+s.connect(('localhost',8000)) 
+while True: 
+    msg=input("Client > ") 
+    s.send(msg.encode()) 
+    print("Server > ",s.recv(1024).decode())
 ```
 ### SERVER
 ```
-import socket
 
-def start_client(host='127.0.0.1', port=65432):
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((host, port))
-
-    try:
-        message = "Hello, Server!"
-        print(f"Sending: {message}")
-        client_socket.sendall(message.encode())
-        data = client_socket.recv(1024)
-        print(f"Received: {data.decode()}")
-    finally:
-        client_socket.close()
-
-if __name__ == "__main__":
-    start_client()
+import socket 
+s=socket.socket() 
+s.bind(('localhost',8000)) 
+s.listen(5) 
+c,addr=s.accept() 
+while True: 
+    ClientMessage=c.recv(1024).decode() 
+    c.send(ClientMessage.encode())
 ```
 ## OUPUT
-![Screenshot 2024-10-19 223833](https://github.com/user-attachments/assets/415fbfe7-bb15-4d23-aad2-a223e01fb976)
+![Screenshot 2024-10-22 183921](https://github.com/user-attachments/assets/fe741aa0-e6c0-420a-8412-39c7d13600c6)
+
 
 ## RESULT
 Thus, the python program for creating Echo Client and Echo Server using TCP Sockets Links 
